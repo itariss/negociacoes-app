@@ -1,16 +1,13 @@
 export class Negociacao {
-	private _data: Date;
-	private _quantidade: number;
-	private _valor: number;
-
-	constructor(data: Date, quantidade: number, valor: number) {
-		this._data = data;
-		this._quantidade = quantidade;
-		this._valor = valor;
-	}
+	constructor(
+		private _data: Date,
+		private _quantidade: number,
+		private _valor: number
+	) {}
 
 	get data(): Date {
-		return this._data;
+		const data = new Date(this._data.getTime());
+		return data;
 	}
 
 	get quantidade(): number {
@@ -25,3 +22,21 @@ export class Negociacao {
 		return this._quantidade * this._valor;
 	}
 }
+
+/*
+
+// Alternativa para classes com metodos getter apenas
+
+export class Negociacao {
+	constructor(
+		public readonly _data: Date,
+		public readonly _quantidade: number,
+		public readonly _valor: number
+	) {}
+
+	get volume(): number {
+		return this._quantidade * this._valor;
+	}
+}
+
+*/

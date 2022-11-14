@@ -17,7 +17,7 @@ export class NegociacoesView extends View {
             .map(negociacao => {
             return `
                                 <tr>
-                                    <td>${negociacao.data.toLocaleDateString()}</td>
+                                    <td>${this.formataData(negociacao.data)}}</td>
                                     <td>${negociacao.quantidade}</td>
                                     <td>${negociacao.valor}</td>
                                 </tr>
@@ -28,5 +28,8 @@ export class NegociacoesView extends View {
                 </tbody>
             </table>
         `;
+    }
+    formataData(data) {
+        return data.toLocaleDateString();
     }
 }

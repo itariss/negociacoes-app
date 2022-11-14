@@ -24,20 +24,3 @@ export class Negociacao {
         return new Negociacao(data, quantidade, valor);
     }
 }
-/*
-
-// Alternativa para classes com metodos getter apenas
-
-export class Negociacao {
-    constructor(
-        public readonly _data: Date,
-        public readonly _quantidade: number,
-        public readonly _valor: number
-    ) {}
-
-    get volume(): number {
-        return this._quantidade * this._valor;
-    }
-}
-
-*/

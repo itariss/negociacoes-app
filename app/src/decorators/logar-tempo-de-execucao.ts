@@ -23,7 +23,7 @@ export function logarTempoDeexecucao(emSegundos: boolean = false) {
 					(t2 - t1) / divisor
 				} ${unidade}`
 			);
-			retorno;
+			return retorno;
 		};
 		return descriptor;
 	};

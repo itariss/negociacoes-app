@@ -31,7 +31,16 @@ export class NegociacaoController {
         this.limparFormulario();
     }
     importaDados() {
-        this.negociacoesService.obterNegociacoes().then(negociacoes => {
+        this.negociacoesService
+            .obterNegociacoes()
+            .then(negociacoes => {
+            return negociacoes.filter(negociacaoNaoListada => {
+                return !this.negociacoes
+                    .lista()
+                    .some(negociacao => negociacao.ehIgual(negociacaoNaoListada));
+            });
+        })
+            .then(negociacoes => {
             for (let negociacao of negociacoes) {
                 this.negociacoes.adiciona(negociacao);
             }
@@ -62,3 +71,4 @@ __decorate([
 __decorate([
     domInjector("#valor")
 ], NegociacaoController.prototype, "inputValor", void 0);
+//# sourceMappingURL=negociacao-controller.js.map

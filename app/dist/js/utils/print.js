@@ -3,3 +3,4 @@ export function print(...objects) {
         console.log(object.paraTexto());
     }
 }
+//# sourceMappingURL=print.js.map

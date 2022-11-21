@@ -1,13 +1,11 @@
-import { Printable } from "../utils/printable.js";
+import { Model } from "./Model.js";
 
-export class Negociacao extends Printable {
+export class Negociacao implements Model<Negociacao> {
 	constructor(
 		private _data: Date,
 		private _quantidade: number,
 		private _valor: number
-	) {
-		super();
-	}
+	) {}
 
 	public static criaDe(
 		dataString: string,
@@ -43,6 +41,10 @@ export class Negociacao extends Printable {
 				Quantidade: ${this.quantidade},
 				Valor: ${this.valor}
 			`;
+	}
+
+	public ehIgual(negociacao: Negociacao): boolean {
+		return this.data.getTime() === negociacao.data.getTime();
 	}
 }
 

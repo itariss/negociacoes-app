@@ -1,6 +1,4 @@
 import { domInjector } from "../decorators/dom-injector.js";
-import { inspect } from "../decorators/inspect.js";
-import { logarTempoDeexecucao } from "../decorators/logar-tempo-de-execucao.js";
 import { DiasDaSemana } from "../enums/dias-da-semana.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
@@ -51,11 +49,22 @@ export class NegociacaoController {
 	}
 
 	public importaDados(): void {
-		this.negociacoesService.obterNegociacoes().then(negociacoes => {
-			for (let negociacao of negociacoes) {
-				this.negociacoes.adiciona(negociacao);
-			}
-		});
+		this.negociacoesService
+			.obterNegociacoes()
+			.then(negociacoes => {
+				return negociacoes.filter(negociacaoNaoListada => {
+					return !this.negociacoes
+						.lista()
+						.some(negociacao =>
+							negociacao.ehIgual(negociacaoNaoListada)
+						);
+				});
+			})
+			.then(negociacoes => {
+				for (let negociacao of negociacoes) {
+					this.negociacoes.adiciona(negociacao);
+				}
+			});
 
 		this.negocicoesView.update(this.negociacoes);
 	}

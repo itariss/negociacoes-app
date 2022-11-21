@@ -1,7 +1,5 @@
-import { Printable } from "../utils/printable.js";
-export class Negociacao extends Printable {
+export class Negociacao {
     constructor(_data, _quantidade, _valor) {
-        super();
         this._data = _data;
         this._quantidade = _quantidade;
         this._valor = _valor;
@@ -32,4 +30,8 @@ export class Negociacao extends Printable {
 				Valor: ${this.valor}
 			`;
     }
+    ehIgual(negociacao) {
+        return this.data.getTime() === negociacao.data.getTime();
+    }
 }
+//# sourceMappingURL=negociacao.js.map

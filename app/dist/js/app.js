@@ -19,3 +19,4 @@ if (botaoImporta) {
 else {
     throw new Error("Não foi possívl encontrar o elemento no DOM");
 }
+//# sourceMappingURL=app.js.map

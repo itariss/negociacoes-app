@@ -1,9 +1,24 @@
-export class Negociacao {
+import { Printable } from "../utils/printable.js";
+
+export class Negociacao extends Printable {
 	constructor(
 		private _data: Date,
 		private _quantidade: number,
 		private _valor: number
-	) {}
+	) {
+		super();
+	}
+
+	public static criaDe(
+		dataString: string,
+		quantidadeString: string,
+		valorString: string
+	) {
+		const data = new Date(dataString.replace(/-/, ","));
+		const quantidade = parseInt(quantidadeString);
+		const valor = parseFloat(valorString);
+		return new Negociacao(data, quantidade, valor);
+	}
 
 	get data(): Date {
 		const data = new Date(this._data.getTime());
@@ -22,15 +37,12 @@ export class Negociacao {
 		return this._quantidade * this._valor;
 	}
 
-	public static criaDe(
-		dataString: string,
-		quantidadeString: string,
-		valorString: string
-	) {
-		const data = new Date(dataString.replace(/-/, ","));
-		const quantidade = parseInt(quantidadeString);
-		const valor = parseFloat(valorString);
-		return new Negociacao(data, quantidade, valor);
+	public paraTexto(): string {
+		return `
+				Data: ${this.data},
+				Quantidade: ${this.quantidade},
+				Valor: ${this.valor}
+			`;
 	}
 }
 

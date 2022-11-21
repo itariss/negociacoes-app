@@ -1,6 +1,7 @@
+import { Printable } from "../utils/printable.js";
 import { Negociacao } from "./negociacao.js";
 
-export class Negociacoes {
+export class Negociacoes extends Printable {
 	// Alternativa: private negociacoes: Negociacao[];
 	private negocicacoes: Array<Negociacao> = [];
 
@@ -12,5 +13,9 @@ export class Negociacoes {
 
 	lista(): ReadonlyArray<Negociacao> {
 		return this.negocicacoes;
+	}
+
+	public paraTexto(): string {
+		return JSON.stringify(this.negocicacoes, null, 2);
 	}
 }

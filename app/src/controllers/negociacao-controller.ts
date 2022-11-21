@@ -4,6 +4,8 @@ import { logarTempoDeexecucao } from "../decorators/logar-tempo-de-execucao.js";
 import { DiasDaSemana } from "../enums/dias-da-semana.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
+import { NegociacoesService } from "../services/negociacoes-services.js";
+import { print } from "../utils/print.js";
 import { MensagemView } from "../views/mensagem-view.js";
 import { NegociacoesView } from "../views/negociacoes-view.js";
 
@@ -17,6 +19,7 @@ export class NegociacaoController {
 	private negociacoes = new Negociacoes();
 	private negocicoesView = new NegociacoesView("#negociacoesView");
 	private mensagemView = new MensagemView("#mensagemView");
+	private negociacoesService = new NegociacoesService();
 
 	constructor() {
 		// Casting explícito
@@ -27,8 +30,8 @@ export class NegociacaoController {
 		// this.inputValor = <HTMLInputElement>document.querySelector("#valor");
 		this.negocicoesView.update(this.negociacoes);
 	}
-	@inspect
-	@logarTempoDeexecucao(true)
+	// @inspect
+	// @logarTempoDeexecucao(true)
 	public adiciona(): void {
 		const negociacao = Negociacao.criaDe(
 			this.inputData.value,
@@ -41,27 +44,18 @@ export class NegociacaoController {
 			);
 		}
 		this.negociacoes.adiciona(negociacao);
+
+		print(negociacao, this.negociacoes);
 		this.atualizaView();
 		this.limparFormulario();
 	}
 
 	public importaDados(): void {
-		const buscaDados = fetch("http://localhost:8080/dados")
-			.then(res => res.json())
-			.then((dados: Array<any>) => {
-				return dados.map(dado => {
-					return new Negociacao(
-						new Date(),
-						dado.vezes,
-						dado.montante
-					);
-				});
-			})
-			.then(negociacoes => {
-				for (let negociacao of negociacoes) {
-					this.negociacoes.adiciona(negociacao);
-				}
-			});
+		this.negociacoesService.obterNegociacoes().then(negociacoes => {
+			for (let negociacao of negociacoes) {
+				this.negociacoes.adiciona(negociacao);
+			}
+		});
 
 		this.negocicoesView.update(this.negociacoes);
 	}
@@ -82,6 +76,6 @@ export class NegociacaoController {
 
 	private atualizaView(): void {
 		this.negocicoesView.update(this.negociacoes);
-		this.mensagemView.update("Negociação adicionada com sucesso");
+		this.mensagemView.update("Negociação adicionanda com sucesso");
 	}
 }

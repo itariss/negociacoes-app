@@ -4,8 +4,6 @@ export function domInjector(selector) {
         const getter = function () {
             if (!element) {
                 element = document.querySelector(selector);
-                console.log(`Buscando elemento no DOM para o seletor ${selector}
-                    para injetar em ${propertyKey} `);
             }
             return element;
         };

@@ -5,11 +5,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { domInjector } from "../decorators/dom-injector.js";
-import { inspect } from "../decorators/inspect.js";
-import { logarTempoDeexecucao } from "../decorators/logar-tempo-de-execucao.js";
 import { DiasDaSemana } from "../enums/dias-da-semana.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
+import { NegociacoesService } from "../services/negociacoes-services.js";
+import { print } from "../utils/print.js";
 import { MensagemView } from "../views/mensagem-view.js";
 import { NegociacoesView } from "../views/negociacoes-view.js";
 export class NegociacaoController {
@@ -17,6 +17,7 @@ export class NegociacaoController {
         this.negociacoes = new Negociacoes();
         this.negocicoesView = new NegociacoesView("#negociacoesView");
         this.mensagemView = new MensagemView("#mensagemView");
+        this.negociacoesService = new NegociacoesService();
         this.negocicoesView.update(this.negociacoes);
     }
     adiciona() {
@@ -25,18 +26,12 @@ export class NegociacaoController {
             this.mensagemView.update("São aceitas apenas negociações em dias úteis");
         }
         this.negociacoes.adiciona(negociacao);
+        print(negociacao, this.negociacoes);
         this.atualizaView();
         this.limparFormulario();
     }
     importaDados() {
-        const buscaDados = fetch("http://localhost:8080/dados")
-            .then(res => res.json())
-            .then((dados) => {
-            return dados.map(dado => {
-                return new Negociacao(new Date(), dado.vezes, dado.montante);
-            });
-        })
-            .then(negociacoes => {
+        this.negociacoesService.obterNegociacoes().then(negociacoes => {
             for (let negociacao of negociacoes) {
                 this.negociacoes.adiciona(negociacao);
             }
@@ -55,7 +50,7 @@ export class NegociacaoController {
     }
     atualizaView() {
         this.negocicoesView.update(this.negociacoes);
-        this.mensagemView.update("Negociação adicionada com sucesso");
+        this.mensagemView.update("Negociação adicionanda com sucesso");
     }
 }
 __decorate([
@@ -67,7 +62,3 @@ __decorate([
 __decorate([
     domInjector("#valor")
 ], NegociacaoController.prototype, "inputValor", void 0);
-__decorate([
-    inspect,
-    logarTempoDeexecucao(true)
-], NegociacaoController.prototype, "adiciona", null);
